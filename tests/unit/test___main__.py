@@ -53,6 +53,8 @@ class TestEvaluator(unittest.TestCase):
         self.pathToThisScriptFile = os.path.dirname(os.path.realpath(__file__))
         self.pathToEvalFile = os.path.join(self.pathToThisScriptFile, "tmp/eval.txt")
 
+        if os.path.exists(self.pathToEvalFile):
+            os.remove(self.pathToEvalFile)
 
         self.dataFolder = os.path.join(self.pathToThisScriptFile, "fixtures/reader")
 
@@ -123,6 +125,194 @@ class TestEvaluator(unittest.TestCase):
         self.assertAlmostEqual(res["partOnLowerCaseStemForm"]["precision"], 1)
         self.assertAlmostEqual(res["partOnLowerCaseStemForm"]["recall"], 0.733333333333333)
         self.assertAlmostEqual(res["partOnLowerCaseStemForm"]["F1"], 0.846153846153846)
+
+    def evalAll(self, e: Evaluator, res: Dict[str, Tuple[int, int, int, int]]) -> None:
+        """
+        Shared part for testing the evaluator on all testing data.
+
+        :param e: Evaluator for testing.
+        :type e: Evaluator
+        :param res: Results on shared data.
+            Dict with key defining name of test data and values:
+                number of distinct predicted keywords
+                number of distinct target keywords
+                number of correctly predicted distinct keywords
+                number of predicted distinct keywords that are sub-phrases of an target keyword
+        :type res: Dict[str, Tuple[int, int, int, int]]
+        """
+        for name, keywords in self.predicted.items():
+            predicted, truth, correct, partCorrect = e(keywords, self.target)
+
+            predictedTarget, truthTarget, correctTarget, partCorrectTarget = res[name]
+
+            self.assertEqual(predicted, predictedTarget, msg=name)
+            self.assertEqual(truth, truthTarget, msg=name)
+            self.assertEqual(correct, correctTarget, msg=name)
+            self.assertEqual(partCorrect, partCorrectTarget, msg=name)
+
+    def test_eval_plain(self):
+        """
+        Test of plain match.
+        """
+        self.evalAll(Evaluator(Evaluator.Match.PLAIN), {
+            "ideal": (5, 5, 5, 5),
+            "caseDiffer": (5, 5, 3, 3),
+            "lemmaSame": (5, 5, 3, 3),
+            "stemSame": (5, 5, 3, 3),
+
+            "ideal2": (2, 5, 2, 2),
+            "caseDiffer2": (3, 5, 2, 2),
+            "lemmaSamer2": (3, 5, 2, 2),
+            "stemSame2": (3, 5, 2, 2),
+
+            "wrong all": (2, 5, 0, 0),
+
+            "nothing": (0, 5, 0, 0),
+
+            "partialIdeal": (4, 5, 1, 4),
+            "partialCaseDiffer": (5, 5, 1, 4),
+            "partialLemmaSame": (5, 5, 1, 3),
+            "partialStemSame": (5, 5, 1, 3),
+        })
+
+    def test_eval_lower_case(self):
+        """
+        Test of lower case match.
+        """
+
+        self.evalAll(Evaluator(Evaluator.Match.LOWER_CASE), {
+            "ideal": (5, 5, 5, 5),
+            "caseDiffer": (5, 5, 5, 5),
+            "lemmaSame": (5, 5, 4, 4),
+            "stemSame": (5, 5, 4, 4),
+
+            "ideal2": (2, 5, 2, 2),
+            "caseDiffer2": (2, 5, 2, 2),
+            "lemmaSamer2": (3, 5, 2, 2),
+            "stemSame2": (3, 5, 2, 2),
+
+            "wrong all": (2, 5, 0, 0),
+
+            "nothing": (0, 5, 0, 0),
+
+            "partialIdeal": (4, 5, 1, 4),
+            "partialCaseDiffer": (5, 5, 1, 5),
+            "partialLemmaSame": (5, 5, 1, 4),
+            "partialStemSame": (5, 5, 1, 4),
+        })
+
+    def test_eval_lower_case_lemma(self):
+        """
+        Test of lower case lemma match.
+        """
+
+        self.evalAll(Evaluator(Evaluator.Match.LOWER_CASE_LEMMA), {
+            "ideal": (5, 5, 5, 5),
+            "caseDiffer": (5, 5, 5, 5),
+            "lemmaSame": (5, 5, 5, 5),
+            "stemSame": (5, 5, 4, 4),
+
+            "ideal2": (2, 5, 2, 2),
+            "caseDiffer2": (2, 5, 2, 2),
+            "lemmaSamer2": (2, 5, 2, 2),
+            "stemSame2": (3, 5, 2, 2),
+
+            "wrong all": (2, 5, 0, 0),
+
+            "nothing": (0, 5, 0, 0),
+
+            "partialIdeal": (4, 5, 1, 4),
+            "partialCaseDiffer": (5, 5, 1, 5),
+            "partialLemmaSame": (5, 5, 1, 5),
+            "partialStemSame": (5, 5, 1, 4),
+        })
+
+    def test_eval_lower_case_stem(self):
+        """
+        Test of lower case stem match.
+        """
+
+        self.evalAll(Evaluator(Evaluator.Match.LOWER_CASE_STEM), {
+            "ideal": (5, 5, 5, 5),
+            "caseDiffer": (5, 5, 5, 5),
+            "lemmaSame": (5, 5, 5, 5),
+            "stemSame": (5, 5, 5, 5),
+
+            "ideal2": (2, 5, 2, 2),
+            "caseDiffer2": (2, 5, 2, 2),
+            "lemmaSamer2": (2, 5, 2, 2),
+            "stemSame2": (2, 5, 2, 2),
+
+            "wrong all": (2, 5, 0, 0),
+
+            "nothing": (0, 5, 0, 0),
+
+            "partialIdeal": (4, 5, 1, 4),
+            "partialCaseDiffer": (5, 5, 1, 5),
+            "partialLemmaSame": (5, 5, 1, 5),
+            "partialStemSame": (5, 5, 1, 5),
+        })
+
+    def test_partOfMatch(self):
+        """
+        Test for part of match.
+        """
+
+        self.assertEqual(
+            Evaluator.partOfMatch(
+                {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"), ("mauris", ),
+                 ("car",), ("vehicle",), ("Integer",)},
+                set()),
+            0
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch(set(), {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"),
+                                          ("mauris",),
+                                          ("car",), ("vehicle",), ("Integer",)}),
+            0
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch({("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus")},
+                                  {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"),
+                                   ("mauris",),
+                                   ("car",), ("vehicle",), ("Integer",)}),
+            3
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch({("lorem", "ipsum"), ("vestibulum", "erat"), ("nascetur", "ridiculus", "mus")},
+                                  {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"),
+                                   ("mauris", ),
+                                   ("car", ), ("vehicle", ), ("Integer", )}),
+            2
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch({("lorem", "ipsum"), ("Vestibulum", "ipsum"), ("nascetur", "ridiculuses", "mus")},
+                                  {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"),
+                                   ("mauris", ),
+                                   ("car", ), ("vehicle", ), ("Integer", )}),
+            1
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch(
+                {("lorem", "ipsum"), ("erat", ), ("nascetur", "ridiculus"), ("mus", ), ("ridiculus", "mus"),
+                 ("nascetur", )},
+                {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"), ("mauris", ),
+                 ("car", ), ("vehicle", ), ("Integer", )}),
+            6
+        )
+
+        self.assertEqual(
+            Evaluator.partOfMatch({("lorem", "ipsum"), ("Vestibulum", "erat"), ("ridiculuses", "mus")},
+                                  {("lorem", "ipsum"), ("Vestibulum", "erat"), ("nascetur", "ridiculus", "mus"),
+                                   ("mauris", ),
+                                   ("car", ), ("vehicle", ), ("Integer", )}),
+            2
+        )
 
     @staticmethod
     def parseResults(p: str) -> Dict[str, Dict[str, float]]:
