@@ -227,11 +227,19 @@ def evalOn(args: argparse.Namespace, targetsExtension: str):
         with open(os.path.join(args.groundTruth, name + "." + targetsExtension), "r") as gtF, \
                 open(os.path.join(args.predicted, name + ".res"), "r") as resF:
             predicted = {kw.strip() for kw in resF}
-            truth = {kw.strip() for kw in " ".join(gtF.read().split()).split(";")}
+            truth = set()
+            for kw in gtF.read().split(";"):
+                kw = " ".join(kw.strip().split())
+                if len(kw) > 0:
+                    truth.add(kw)
 
             for match, evaluator in evaluators.items():
-                res[match]["extracted"], res[match]["groundTruth"], \
-                    res[match]["correct"], res[match]["correctPartOf"] = evaluator(predicted, truth)
+                actE = evaluator(predicted, truth)
+
+                res[match]["extracted"] += actE[0]
+                res[match]["groundTruth"] += actE[1]
+                res[match]["correct"] += actE[2]
+                res[match]["correctPartOf"] += actE[3]
 
     printEval("Exact match:", res["plain"]["correct"], res["plain"]["extracted"], res["plain"]["groundTruth"])
     printEval("Part of match:", res["plain"]["correctPartOf"], res["plain"]["extracted"],
@@ -339,6 +347,7 @@ class Evaluator(object):
                         any(predKW == truthKW[offset:offset + len(predKW)] for offset in
                             range(0, len(truthKW) - len(predKW) + 1)):
                     counter += 1
+                    break
 
         return counter
 

@@ -1,1 +1,3 @@
-lorem ipsum; vestibulum erat; ridiculus mus
+lorem ipsum
+vestibulum erat
+ridiculus mus
