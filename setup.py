@@ -20,14 +20,8 @@ setup(name='evalHulth2003',
         ]
     },
     install_requires=[
-        #TODO
-        'pandas>=0.23',
-        'scikit_image>=0.15',
-        'setuptools>=39.0',
-        'scipy>=1.2',
-        'numpy>=1.16',
-        'typing>=3.6',
-        'PySide2>=5.12',
-        'scikit_learn>=0.20'
+        'nltk >= 3.2.5',
+        'spacy == 2.0.11',
+        'tqdm == 4.36.1'
     ]
 )
