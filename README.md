@@ -22,21 +22,29 @@ Hulth2003 (inspec) dataset is a dataset of titles and abstracts from which you s
 
 It's split into three parts:
 
-* Train
-* Validation 
-* Test
+* dataset/train
+* dataset/validation 
+* dataset/test
 
 Each part consists of two types of files:
     
-* content files
+* content files (.abstr)
     * Files containing titles and abstracts.
-* keyphrases files
+* keyphrases files (.uncontr and .uncontr_in)
     * All target keyphrases for the title-abstract pair in the corresponding document.
 
 ## Tasks
 In this section is presented how to run the script to get the evaluation of your results for the given task.
 
-The evaluation metrics are precision, recall, and F1. The result/target keyphrases are handled in a set fashion, so if you extract/generate the same keyphrase multiple times, it's considered only once. Two keyphrases are considered the same if they match according to the given scheme (matching schemes are described below).
+The evaluation metrics are:
+* precision
+    * correct / extracted
+* recall
+    * correct / ground truth
+* F1
+    * 2 * precision * recall / (precision + recall)
+
+The result/target keyphrases are handled in a set fashion, so if you extract/generate the same keyphrase multiple times, it's considered only once. Two keyphrases are considered the same if they match according to the given scheme (matching schemes are described below).
 
 ### Matching schemes
 As the very first step is performed tokenization with English spacy tokenizer and then we are investigating matches according to multiple schemes.

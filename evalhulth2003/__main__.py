@@ -58,7 +58,7 @@ class ArgumentsManager(object):
 
         subparsers = parser.add_subparsers()
 
-        keywordsParser = subparsers.add_parser('keywords', help="Selects keywords that are actually in text.")
+        keywordsParser = subparsers.add_parser('keywords', help="Selects keywords that are actually in a text.")
         keywordsParser.add_argument("-d", "--data",
                                     help="Path to directory with *.abstr and *.uncontr files.", type=str,
                                     required=True)
@@ -133,12 +133,12 @@ def precisionRecallF1(correct: int, extracted: int, groundTruth: int) -> Tuple[f
     """
     Calculates metrices.
 
-    :param correct:
-    :type correct:
-    :param extracted:
-    :type extracted:
-    :param groundTruth:
-    :type groundTruth:
+    :param correct: Number of correct keywords.
+    :type correct: int
+    :param extracted: Number of extracted keywords.
+    :type extracted: int
+    :param groundTruth: Number of annotated keywords.
+    :type groundTruth: int
     :return: precision, recall, F1
     :rtype: Tuple[float, float, float]
     """
