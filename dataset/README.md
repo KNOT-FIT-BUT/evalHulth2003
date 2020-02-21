@@ -1,13 +1,13 @@
-#Hulth2003
+# Hulth2003
 This dataset was originally obtained from https://www.researchgate.net/publication/261860598_Hulth2003tar, but you 
 don't find here the *.contr files because there aren't used in literature.
 
 We add one new type of file *.uncontr_in that contains only keywords that are in the text.
 
 
-#Original README.txt
+## Original README.txt
 Down bellow is content of the original README.txt.
-##ACKNOWLEDGEMENT
+### ACKNOWLEDGEMENT
 
 This dataset may be used for research purposes provided that a
 suitable acknowledgement is given:
@@ -17,7 +17,7 @@ Data from the Inspec Database kindly supplied by The IET
 http://www.theiet.org/publishing/inspec/index.cfm
 
 
-##THE DATA
+### THE DATA
 There are three types of files:
 
 .abstr: Contains the title and the abstract. When inspecting a file,
@@ -31,6 +31,6 @@ with semicolon.
 separated with semicolon. These are the keywords used in Hulth's
 experiments.
 
-##CONTACT
+### CONTACT
 For questions, please contact: Anette Hulth (anette.hulth@gmail.com)
 
