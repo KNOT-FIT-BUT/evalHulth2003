@@ -15,7 +15,11 @@ and use the:
     
 Alternatively, you can install the evaluation script as the python console application:
 
-    python setup.py install
+    pip install .
+    
+and run it with:
+
+    evalhulth2003
 
 ## Dataset
 Hulth2003 (inspec) dataset is a dataset of titles and abstracts from which you should extract/generate relevant keyphrases.

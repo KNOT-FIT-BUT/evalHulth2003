@@ -13,7 +13,7 @@ setup(name='evalHulth2003',
     version='1.0.0',
     description='Script for evaluation of your results on Hulth 2003 (inspec) keywords dataset.',
     author='Martin Dočekal',
-    packages=['evalhulth2003', 'tests'],
+    packages=['evalhulth2003', 'tests', 'tests.unit', 'evalhulth2003.utils'],
     entry_points={
         'console_scripts': [
             'evalhulth2003 = evalhulth2003.__main__:main'
