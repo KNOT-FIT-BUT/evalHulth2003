@@ -56,9 +56,9 @@ As the very first step is performed tokenization with English spacy tokenizer an
 As valid extracted/generate keyphrase is keyphrase considered when:
 
 * Exact match
-    * All tokens of keyphrase haves an exact string match with at least one ground truth keyphrase of the given document.
+    * All tokens of keyphrase have an exact string match with at least one ground truth keyphrase of the given document.
 * Part of match
-    * All tokens of keyphrase haves an exact string match with at least one ground truth keyphrase or sub-keyphrase of the given document.
+    * All tokens of keyphrase have an exact string match with at least one ground truth keyphrase or sub-keyphrase of the given document.
         * Examples of sub-keyphrases for: programing language
             * programing language
             * programing
@@ -69,13 +69,13 @@ As valid extracted/generate keyphrase is keyphrase considered when:
     * case insensitive variant of Part of match
     * What is sub-keyphrase is explained bellow the Part of match.
 * Exact match on lower case lemma form
-    * All tokens are transformed into their lower case lemma form (with spacy), and than we are finding a match with at least one target keyphrase that is transformed in the very same way.
+    * All tokens are transformed into their lower case lemma form (with spacy), and then we are finding a match with at least one target keyphrase that is transformed in the very same way.
 * Part of match on lower case lemma form:
-    * All tokens are transformed into their lower case lemma form (with spacy), and than we are finding a match with at least one target sub-keyphrase that is transformed in the very same way. What is sub-keyphrase is explained bellow the Part of match.
+    * All tokens are transformed into their lower case lemma form (with spacy), and then we are finding a match with at least one target sub-keyphrase that is transformed in the very same way. What is sub-keyphrase is explained bellow the Part of match.
 * Exact match on lower case stem form
-    * All tokens are transformed into their lower case stem form with PorterStemmer (nltk), and than we are finding a match with at least one target keyphrase that is transformed in the very same way.
+    * All tokens are transformed into their lower case stem form with PorterStemmer (nltk), and then we are finding a match with at least one target keyphrase that is transformed in the very same way.
 * Part of match on lower case stem form
-    * All tokens are transformed into their lower case stem form with PorterStemmer (nltk), and than we are finding a match with at least one target sub-keyphrase that is transformed in the very same way. What is sub-keyphrase is explained bellow the Part of match.
+    * All tokens are transformed into their lower case stem form with PorterStemmer (nltk), and then we are finding a match with at least one target sub-keyphrase that is transformed in the very same way. What is sub-keyphrase is explained bellow the Part of match.
 
 ### Keyphrase extraction
 To run the evaluation script for keyphrase extraction task evaluation use following command:
