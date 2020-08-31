@@ -141,9 +141,16 @@ def precisionRecallF1(correct: int, extracted: int, groundTruth: int) -> Tuple[f
     :type groundTruth: int
     :return: precision, recall, F1
     :rtype: Tuple[float, float, float]
+    :raise ValueError: When invalid values are passed.
     """
-    precision = correct / extracted
-    recall = correct / groundTruth
+    if correct > extracted:
+        raise ValueError("Number of correct keywords is greater than number of all extracted keywords.")
+
+    if groundTruth == 0 and correct > 0:
+        raise ValueError("There should be no keywords, but correct is > 0.")
+
+    precision = correct / extracted if extracted > 0 else 0
+    recall = correct / groundTruth if groundTruth > 0 else 0
     return precision, recall, 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
 
 

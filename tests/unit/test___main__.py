@@ -83,6 +83,22 @@ class TestEvaluator(unittest.TestCase):
         self.assertAlmostEqual(r, 0.2)
         self.assertAlmostEqual(f, 0.28571428571428571429)
 
+        p, r, f = precisionRecallF1(0, 4, 10)
+        self.assertAlmostEqual(p, 0.0)
+        self.assertAlmostEqual(r, 0.0)
+        self.assertAlmostEqual(f, 0.0)
+
+        p, r, f = precisionRecallF1(0, 0, 10)
+        self.assertAlmostEqual(p, 0.0)
+        self.assertAlmostEqual(r, 0.0)
+        self.assertAlmostEqual(f, 0.0)
+
+        with self.assertRaises(ValueError):
+            _ = precisionRecallF1(2, 0, 10)
+
+        with self.assertRaises(ValueError):
+            _ = precisionRecallF1(2, 4, 0)
+
     def test_call_eval(self):
         """
         Tests the call eval method.
